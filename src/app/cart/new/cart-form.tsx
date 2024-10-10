@@ -16,6 +16,7 @@ function CartForm() {
       ...data,
     });
     router.push("/");
+    router.refresh();
   });
   return (
     <div>

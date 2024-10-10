@@ -1,10 +1,12 @@
+import LetterCard from "@/components/letter-card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getCart } from "./cart/cart.api";
-import { Card, CardContent } from "@/components/ui/card";
 
+export const dynamic = "force-dynamic";
 export default async function Home() {
   const letters = await getCart();
+
   return (
     <div className="w-screen h-screen">
       <h1>Hello world</h1>
@@ -15,21 +17,9 @@ export default async function Home() {
       <Button variant="outline">Hello world</Button>
       <Button variant="secondary">Hello world</Button>
       <Link href={"/cart/new"}>Cart</Link>
-
-      <div>
-        {" "}
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 ">
         {letters.map((letter) => (
-          <Card key={letter.id}>
-            {" "}
-            <CardContent>
-              <p>
-                {letter.sender} to {letter.recipient}
-              </p>
-              {letter.message}
-
-              <p>{letter.drawingData}</p>
-            </CardContent>
-          </Card>
+          <LetterCard key={letter.id} letter={letter} />
         ))}
       </div>
     </div>
