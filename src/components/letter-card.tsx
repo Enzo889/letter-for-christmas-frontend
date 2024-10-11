@@ -11,8 +11,19 @@ import {
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
 
-export default function LetterCard({ letter }) {
+export default function LetterCard({ letter }: any) {
   const router = useRouter();
 
   async function handleRemove(id: string) {
@@ -24,7 +35,7 @@ export default function LetterCard({ letter }) {
     <>
       <div>
         {" "}
-        <Card key={letter.id} onClick={() => router.push(`/cart/${letter.id}`)}>
+        <Card key={letter.id}>
           {" "}
           <CardHeader>
             <CardTitle>
@@ -48,16 +59,34 @@ export default function LetterCard({ letter }) {
             >
               Edit Letter
             </Button>
-            <Button
-              variant={"neutral"}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRemove(letter.id);
-              }}
-            >
-              {" "}
-              Delete
-            </Button>
+
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <Button>Delete</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemove(letter.id);
+                    }}
+                  >
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </CardFooter>
         </Card>
       </div>
