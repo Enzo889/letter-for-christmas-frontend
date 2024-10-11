@@ -49,14 +49,14 @@ export default function LetterCard({ letter }) {
               Edit Letter
             </Button>
             <Button
-              variant={"destructive"}
+              variant={"neutral"}
               onClick={(e) => {
                 e.stopPropagation();
                 handleRemove(letter.id);
               }}
             >
               {" "}
-              delete
+              Delete
             </Button>
           </CardFooter>
         </Card>

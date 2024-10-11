@@ -53,7 +53,10 @@ function CartForm({ letter }: Letter) {
         <Input {...register("message")} />
         <Label>Draw</Label>
         <Input {...register("drawingData")} />
-        <Button> {params.id ? "Update Letter" : "Create Letter"}</Button>
+        <Button className="mt-4" variant={"neutral"}>
+          {" "}
+          {params.id ? "Update Letter" : "Create Letter"}
+        </Button>
       </form>
     </div>
   );
