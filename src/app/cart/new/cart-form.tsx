@@ -3,18 +3,41 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
-import { createCart } from "../cart.api";
+import { createCart, updateLetter } from "../cart.api";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
-function CartForm() {
-  const { register, handleSubmit } = useForm();
+interface Letter {
+  letter?: {
+    sender: string;
+    recipient: string;
+    message: string;
+    drawingData: string;
+  };
+}
+function CartForm({ letter }: Letter) {
+  console.log(letter);
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      sender: letter?.sender,
+      recipient: letter?.recipient,
+      message: letter?.message,
+      drawingData: letter?.drawingData,
+    },
+  });
   const router = useRouter();
+  const params = useParams<{ id: string }>();
 
   const onSubmit = handleSubmit(async (data) => {
-    await createCart({
-      ...data,
-    });
+    if (params.id) {
+      await updateLetter(params.id, {
+        ...data,
+      });
+    } else {
+      await createCart({
+        ...data,
+      });
+    }
     router.push("/");
     router.refresh();
   });
@@ -30,7 +53,7 @@ function CartForm() {
         <Input {...register("message")} />
         <Label>Draw</Label>
         <Input {...register("drawingData")} />
-        <Button> Create cart </Button>
+        <Button> {params.id ? "Update Letter" : "Create Letter"}</Button>
       </form>
     </div>
   );

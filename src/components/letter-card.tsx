@@ -24,7 +24,7 @@ export default function LetterCard({ letter }) {
     <>
       <div>
         {" "}
-        <Card key={letter.id}>
+        <Card key={letter.id} onClick={() => router.push(`/cart/${letter.id}`)}>
           {" "}
           <CardHeader>
             <CardTitle>
@@ -39,10 +39,21 @@ export default function LetterCard({ letter }) {
             </Link>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button variant={"default"}> send to santa</Button>
+            <Button
+              variant={"default"}
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/cart/${letter.id}/edit`);
+              }}
+            >
+              Edit Letter
+            </Button>
             <Button
               variant={"destructive"}
-              onClick={() => handleRemove(letter.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemove(letter.id);
+              }}
             >
               {" "}
               delete
