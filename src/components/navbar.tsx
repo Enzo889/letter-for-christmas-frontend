@@ -6,7 +6,7 @@ import { GithubIcon } from "lucide-react";
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 left-0 right-0 z-50 border-b-2 border-b-black bg-white">
+    <nav className="sticky top-0 left-0 right-0 z-50 border-b-4 border-b-black bg-white">
       <div className="flex justify-between  p-7 max-sm:p-4 ">
         <div className="flex justify-center items-center">
           <Link
