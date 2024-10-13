@@ -22,6 +22,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import { Dancing_Script } from "next/font/google";
+
+export const dancing = Dancing_Script({
+  variable: "--font-dancing",
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export default function LetterCard({ letter }: any) {
   const router = useRouter();
@@ -38,16 +45,15 @@ export default function LetterCard({ letter }: any) {
         <Card key={letter.id}>
           {" "}
           <CardHeader>
-            <CardTitle>
-              {" "}
-              {letter.sender} to {letter.recipient}
+            <CardTitle className={`${dancing.className} text-4xl`}>
+              <p>Dear {letter.recipient},</p>
+              <p className="text-3xl font-normal">
+                My name is {letter.sender}.
+              </p>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            {letter.message}.
-            <Link href={letter.drawingData} target="_blank">
-              <iframe name="tldraw" src={letter.drawingData}></iframe>
-            </Link>
+          <CardContent className={`${dancing.className} text-2xl`}>
+            {letter.message ? letter.message : "no message"}
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button
