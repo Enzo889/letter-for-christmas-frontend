@@ -24,6 +24,7 @@ import {
 import { Dancing_Script } from "next/font/google";
 import { TldrawImage } from "tldraw";
 import { toast } from "sonner";
+import { LetterWithletter } from "@/app/cart/new/cart-form";
 
 export const dancing = Dancing_Script({
   variable: "--font-dancing",
@@ -31,18 +32,22 @@ export const dancing = Dancing_Script({
   weight: "400",
 });
 
-export default function LetterCard({ letter }: any) {
+interface ResponseData {
+  name: string;
+}
+
+export default function LetterCard({ letter }: LetterWithletter) {
   const router = useRouter();
 
   let parsedData = null;
-  if (letter.drawingData && letter.drawingData.trim() !== "") {
+  if (letter?.drawingData && letter.drawingData.trim() !== "") {
     try {
       parsedData = JSON.parse(letter.drawingData);
     } catch (error) {
       console.error("Error parsing JSON: ", error);
     }
   } else {
-    console.log("drawingData is empty or null for ID: ", letter.id);
+    console.log("drawingData is empty or null for ID: ", letter?.id);
   }
   async function handleRemove(id: string) {
     await deleteCart(id);
@@ -53,35 +58,41 @@ export default function LetterCard({ letter }: any) {
     <>
       <div>
         {" "}
-        <Card key={letter.id}>
+        <Card key={letter?.id}>
           {" "}
           <CardHeader>
             <CardTitle className={`${dancing.className} text-4xl space-y-4`}>
-              <p>Dear {letter.recipient},</p>
+              <p>Dear {letter?.recipient},</p>
               <p className="text-3xl text-current/80">
-                My name is {letter.sender}.
+                My name is {letter?.sender}.
               </p>
             </CardTitle>
           </CardHeader>
           <CardContent
             className={`${dancing.className} text-2xl text-current/60`}
           >
-            {letter.message ? letter.message : "no message"}
+            {letter?.message}
             <TldrawImage snapshot={parsedData} />
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button
               variant={"default"}
               onClick={() => {
-                router.push(`/cart/${letter.id}/edit`);
+                router.push(`/cart/${letter?.id}/edit`);
               }}
             >
               Edit Letter
             </Button>
+            <Button
+              variant={"default"}
+              onClick={() => router.push(`/cart/${letter?.id}`)}
+            >
+              View Letter
+            </Button>
 
             <AlertDialog>
               <AlertDialogTrigger>
-                <Button>Delete</Button>
+                <Button variant={"neutral"}>Delete</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -97,8 +108,8 @@ export default function LetterCard({ letter }: any) {
                   </AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => {
-                      handleRemove(letter.id);
-                      const promise = () =>
+                      handleRemove(letter?.id as string);
+                      const promise = (): Promise<ResponseData> =>
                         new Promise((resolve) =>
                           setTimeout(() => resolve({ name: "Letter" }), 2000)
                         );

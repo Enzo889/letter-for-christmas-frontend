@@ -12,11 +12,11 @@ interface Props {
 async function NewCart({ params }: Props) {
   const letter = await getLetter(params.id);
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-full flex justify-center items-center m-4">
       {" "}
       <Card>
         <CardHeader>
-          <CardTitle> {params.id ? "Edit Cart" : "New Cart"}</CardTitle>
+          <CardTitle> {params.id ? "Edit Letter" : "New Letter"}</CardTitle>
         </CardHeader>
         <CardContent>
           <CartForm letter={letter} />

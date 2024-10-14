@@ -27,9 +27,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
-interface Letter {
+export interface LetterWithletter {
   letter?: {
-    id?: number;
+    id: string;
     sender?: string;
     recipient?: string;
     message?: string;
@@ -48,7 +48,7 @@ const christmasCharacters = [
   "Krampus",
 ];
 
-function CartForm({ letter }: Letter) {
+function CartForm({ letter }: LetterWithletter) {
   const { register, handleSubmit, control, setValue } = useForm({
     defaultValues: {
       sender: letter?.sender || "",
@@ -177,7 +177,7 @@ function CartForm({ letter }: Letter) {
               {isEditing ? "✓ Save drawing" : "✎ Edit drawing"}
             </Button>
           </div>
-          <div className="h-[400px] border border-gray-300 rounded-md">
+          <div className="h-[25rem] w-[21rem]  ">
             {isEditing ? (
               <Tldraw
                 snapshot={snapshot}
