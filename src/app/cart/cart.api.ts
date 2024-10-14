@@ -36,7 +36,7 @@ export async function deleteCart(id: string) {
 }
 
 export interface Letter {
-  id?: string;
+  id?: number;
   sender?: string;
   recipient?: string;
   message?: string;

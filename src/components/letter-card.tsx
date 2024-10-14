@@ -10,7 +10,6 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,6 +22,8 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { Dancing_Script } from "next/font/google";
+import { TldrawImage } from "tldraw";
+import { toast } from "sonner";
 
 export const dancing = Dancing_Script({
   variable: "--font-dancing",
@@ -33,6 +34,16 @@ export const dancing = Dancing_Script({
 export default function LetterCard({ letter }: any) {
   const router = useRouter();
 
+  let parsedData = null;
+  if (letter.drawingData && letter.drawingData.trim() !== "") {
+    try {
+      parsedData = JSON.parse(letter.drawingData);
+    } catch (error) {
+      console.error("Error parsing JSON: ", error);
+    }
+  } else {
+    console.log("drawingData is empty or null for ID: ", letter.id);
+  }
   async function handleRemove(id: string) {
     await deleteCart(id);
     router.refresh();
@@ -45,21 +56,23 @@ export default function LetterCard({ letter }: any) {
         <Card key={letter.id}>
           {" "}
           <CardHeader>
-            <CardTitle className={`${dancing.className} text-4xl`}>
+            <CardTitle className={`${dancing.className} text-4xl space-y-4`}>
               <p>Dear {letter.recipient},</p>
-              <p className="text-3xl font-normal">
+              <p className="text-3xl text-current/80">
                 My name is {letter.sender}.
               </p>
             </CardTitle>
           </CardHeader>
-          <CardContent className={`${dancing.className} text-2xl`}>
+          <CardContent
+            className={`${dancing.className} text-2xl text-current/60`}
+          >
             {letter.message ? letter.message : "no message"}
+            <TldrawImage snapshot={parsedData} />
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button
               variant={"default"}
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={() => {
                 router.push(`/cart/${letter.id}/edit`);
               }}
             >
@@ -75,7 +88,7 @@ export default function LetterCard({ letter }: any) {
                   <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                   <AlertDialogDescription>
                     This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
+                    your letter and remove your data from our servers.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -83,9 +96,20 @@ export default function LetterCard({ letter }: any) {
                     Cancel
                   </AlertDialogCancel>
                   <AlertDialogAction
-                    onClick={(e) => {
-                      e.stopPropagation();
+                    onClick={() => {
                       handleRemove(letter.id);
+                      const promise = () =>
+                        new Promise((resolve) =>
+                          setTimeout(() => resolve({ name: "Letter" }), 2000)
+                        );
+
+                      toast.promise(promise, {
+                        loading: "Loading...",
+                        success: (data) => {
+                          return `The ${data.name} has been successfully deleted.`;
+                        },
+                        error: "Error",
+                      });
                     }}
                   >
                     Continue

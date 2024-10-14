@@ -8,7 +8,7 @@ async function CollagueLetters() {
   return (
     <div>
       {" "}
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-5 mx-5">
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-5">
         {letters.map((letter: Letter) => (
           <LetterCard key={letter.id} letter={letter} />
         ))}
